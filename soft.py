@@ -1,10 +1,16 @@
 # coding:utf-8
 
-import serial
+DEVICE_ID = 'AH03ICY5'
 
+
+from cProfile import Profile
+import serial
 from lib.StupidArtnet import StupidArtnet
 
-artn = StupidArtnet('127.0.0.1', 0, 512)
+artNetIp = '127.0.0.1'
+artNetPort = '6454(default)'
+artn = StupidArtnet('127.0.0.1', 0, 512, 60)
+print('ArtNet ip: ',artNetIp,'port: ', artNetPort)
 artn.start()
 packet = bytearray(512)
 for i in range(512):
@@ -12,10 +18,10 @@ for i in range(512):
 
 artn.set(packet)
 
-ser = serial.Serial('/dev/tty.usbserial-AH03GYSC', 9600)
-print('connection')
+deviceName = '/dev/tty.usbserial-' + DEVICE_ID
+ser = serial.Serial(deviceName, 74880)
+print('conected: ', deviceName)
 while True:
     res = ser.readline().decode()
     dmxOneValue = str(res[:-2]).split(':')
     artn.set_single_value(int(dmxOneValue[0]), int(dmxOneValue[1]))
-
