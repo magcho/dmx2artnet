@@ -3,7 +3,7 @@
 DEVICE_ID = 'AH03ICY5'
 
 
-from cProfile import Profile
+
 import serial
 from lib.StupidArtnet import StupidArtnet
 
